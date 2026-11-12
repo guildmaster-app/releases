@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Descargar Guildmaster</title>
+<meta name="description" content="Guildmaster organiza tu trabajo: tu semana según lo que de verdad te cabe, tus tareas conectadas con tus objetivos y lo que te piden, en un solo lugar.">
+<style>
+  :root {
+    --bg: #f6f5f2; --card: #ffffff; --ink: #1c1b19; --ink-2: #57544e; --ink-3: #8a867e;
+    --line: #e4e1da; --accent: #b4572e; --accent-ink: #ffffff; --soft: #f3e7e0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #131211; --card: #1c1b19; --ink: #f1efe9; --ink-2: #bdb8ae; --ink-3: #8a867e; --line: #2e2c29; --accent: #e08a5f; --accent-ink: #1a0f0a; --soft: #2a1f19; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 64px 16px 48px; }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -0.01em; font-size: 18px; }
+  .mark i { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: inline-block; }
+  h1 { font-size: clamp(30px, 6vw, 42px); line-height: 1.12; letter-spacing: -0.025em; margin: 40px 0 14px; }
+  .lead { color: var(--ink-2); font-size: 18px; margin: 0 0 32px; max-width: 560px; }
+  .primary { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 600; padding: 14px 22px; border-radius: 12px; font-size: 16px; }
+  .primary:hover { filter: brightness(1.05); }
+  .meta { color: var(--ink-3); font-size: 13px; margin-top: 10px; }
+  .others { margin-top: 18px; font-size: 14px; color: var(--ink-2); }
+  .others a { color: var(--ink); }
+  section { margin-top: 48px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px 22px 8px; }
+  h2 { font-size: 15px; margin: 0 0 12px; }
+  ol { margin: 0 0 14px; padding-left: 20px; color: var(--ink-2); font-size: 14.5px; }
+  li { margin-bottom: 8px; }
+  code { background: var(--soft); padding: 1px 6px; border-radius: 6px; font-size: 13px; }
+  footer { margin-top: 40px; color: var(--ink-3); font-size: 13px; }
+  footer a { color: var(--ink-2); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="mark"><i aria-hidden="true"></i>Guildmaster</div>
+  <h1>Tu trabajo, organizado según lo que de verdad te cabe.</h1>
+  <p class="lead">Guildmaster arma tu semana con tus tareas, tus reuniones y lo que te piden, conecta tu trabajo con tus objetivos y te muestra cómo vas creciendo. Tus datos se quedan cifrados en tu computador.</p>
+
+  <a id="main" class="primary" href="https://github.com/guildmaster-app/releases/releases/latest">Descargar Guildmaster</a>
+  <div id="meta" class="meta"></div>
+  <div class="others" id="others">
+    Otras versiones:
+    <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Windows.exe">Windows</a> ·
+    <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-arm64.dmg">Mac con chip de Apple</a> ·
+    <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-x64.dmg">Mac con Intel</a>
+  </div>
+
+  <section>
+    <h2>Antes de abrirla</h2>
+    <ol>
+      <li>Guildmaster usa <strong>Claude Code</strong> con tu cuenta de Claude. Instálalo e inicia sesión: <a href="https://claude.com/product/claude-code">cómo instalar Claude Code</a>.</li>
+      <li id="win-note"><strong>En Windows</strong>, si aparece «Windows protegió su PC», elige <em>Más información → Ejecutar de todas formas</em>. Después se actualiza sola.</li>
+      <li id="mac-note"><strong>En Mac</strong>, arrastra Guildmaster a Aplicaciones. Si macOS no la deja abrir, ve a <em>Ajustes del Sistema → Privacidad y seguridad</em> y elige <em>Abrir igualmente</em>.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Todas las versiones en <a href="https://github.com/guildmaster-app/releases/releases">Releases</a>.
+  </footer>
+</main>
+<script>
+  // The installer for this computer: Windows, or a Mac (Apple chip unless it says Intel). Links point to the latest release.
+  (function () {
+    var base = 'https://github.com/guildmaster-app/releases/releases/latest/download/';
+    var ua = navigator.userAgent;
+    var a = document.getElementById('main');
+    var meta = document.getElementById('meta');
+    var os = /Windows/.test(ua) ? 'win' : /Macintosh|Mac OS X/.test(ua) ? 'mac' : null;
+    if (os === 'win') {
+      a.href = base + 'Guildmaster-Windows.exe';
+      a.textContent = 'Descargar para Windows';
+      document.getElementById('mac-note').hidden = true;
+    } else if (os === 'mac') {
+      var intel = false;
+      try {
+        var gl = document.createElement('canvas').getContext('webgl');
+        var dbg = gl && gl.getExtension('WEBGL_debug_renderer_info');
+        var gpu = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : '';
+        intel = /Intel/i.test(gpu);
+      } catch (e) {}
+      a.href = base + (intel ? 'Guildmaster-Mac-x64.dmg' : 'Guildmaster-Mac-arm64.dmg');
+      a.textContent = intel ? 'Descargar para Mac (Intel)' : 'Descargar para Mac';
+      document.getElementById('win-note').hidden = true;
+    } else {
+      meta.textContent = 'Guildmaster es para Windows y Mac: ábrela desde tu computador.';
+    }
+    fetch('https://api.github.com/repos/guildmaster-app/releases/releases/latest')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.tag_name) return;
+        var when = j.published_at ? new Date(j.published_at).toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+        meta.textContent = 'Versión ' + j.tag_name.replace(/^v/, '') + (when ? ' · ' + when : '');
+      })
+      .catch(function () {});
+  })();
+</script>
+</body>
+</html>
