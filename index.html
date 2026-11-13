@@ -89,8 +89,20 @@
     } else {
       meta.textContent = 'Guildmaster es para Windows y Mac: ábrela desde tu computador.';
     }
+    // Without a published version yet, the links would land on a 404: say so instead.
     fetch('https://api.github.com/repos/guildmaster-app/releases/releases/latest')
-      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (r) {
+        if (r.status === 404) {
+          a.removeAttribute('href');
+          a.style.opacity = '0.5';
+          a.style.pointerEvents = 'none';
+          a.textContent = 'Muy pronto';
+          meta.textContent = 'La primera versión está por publicarse. Vuelve en un rato.';
+          document.getElementById('others').hidden = true;
+          return null;
+        }
+        return r.ok ? r.json() : null;
+      })
       .then(function (j) {
         if (!j || !j.tag_name) return;
         var when = j.published_at ? new Date(j.published_at).toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
