@@ -181,6 +181,20 @@
   footer { border-top: 2.5px solid var(--line); padding: 26px 0 40px; color: var(--ink-3); font-size: 13.5px; }
   footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
   footer a { color: var(--ink-2); font-weight: 600; }
+
+  /* Integrations: the tools, by what they're for, each in its tile with its logo in ink. */
+  .integ-head { display: grid; gap: 24px; align-items: end; margin-bottom: 32px; }
+  @media (min-width: 900px) { .integ-head { grid-template-columns: 1fr auto; } }
+  .integ-count { padding: 18px 24px; display: flex; align-items: center; gap: 14px; background-color: var(--mint); }
+  .integ-count .big { font: 800 56px/1 var(--sans); letter-spacing: -0.04em; color: var(--accent-2); }
+  .integ-count span:last-child { font-weight: 700; font-size: 15px; max-width: 120px; line-height: 1.25; }
+  .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; padding: 16px; }
+  @media (min-width: 1080px) { .tool-grid { grid-template-columns: repeat(7, 1fr); } }
+  .tool { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 12px 8px 14px; min-height: 124px; border: 2px solid var(--line); border-radius: 8px; background: var(--white); font-size: 13px; font-weight: 650; transition: transform .12s ease, box-shadow .12s ease; }
+  .tool:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--accent); }
+  .tool svg { width: 30px; height: 30px; fill: var(--ink); }
+  .tool .cat { font: 700 9.5px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .tool .mono { width: 30px; height: 30px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 7px; font: 800 13px var(--sans); letter-spacing: -0.02em; }
   [hidden] { display: none !important; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
 </style>
@@ -218,7 +232,7 @@
         <div class="dl-pair" data-pair="top"><a class="btn primary dl-win" href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Windows.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg><span>Descargar para Windows</span></a><a class="btn primary dl-mac" href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-arm64.dmg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.1 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.6 2.8-1.3z"/></svg><span>Descargar para Mac</span></a></div>
         <div class="others" id="others"><span id="meta">Para Windows 10 y 11, y macOS 13 o más reciente.</span> ¿Mac con Intel? <a class="dl-intel" href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-x64.dmg">Descárgala aquí</a>.</div>
       </div>
-      <div class="proof"><span>14 integraciones</span><span>IA que conoce a tu equipo</span><span>Cifrado AES-256</span><span>Se actualiza sola</span></div>
+      <div class="proof"><span>14 integraciones</span><span>IA que conoce a tu equipo</span><span>Cifrado AES-256</span><span>Siempre al día</span></div>
     </div>
 
     <div class="hero-comic" aria-hidden="true">
@@ -236,7 +250,7 @@
       </div>
       <div class="panel" style="background:var(--rose)">
         <div class="ph" style="color:var(--ink-2)">Alertas</div>
-        <div class="kpi">1<small>alta · dbt</small></div>
+        <div class="kpi">1<small>alta · GitHub</small></div>
         <div style="font-size:12.5px;margin-top:8px;color:var(--ink-2)">Causa y solución propuestas</div>
       </div>
     </div>
@@ -382,20 +396,20 @@
     <div class="feat-copy">
       <span class="caption">Alertas</span>
       <h2>Detecta los fallos antes de que se acumulen.</h2>
-      <p>Para equipos de datos: Guildmaster vigila tus herramientas y, cuando algo se rompe, investiga con el contexto de tu equipo.</p>
+      <p>Para equipos de desarrollo: Guildmaster vigila tus herramientas y, cuando algo se rompe, investiga con el contexto de tu equipo.</p>
       <ul class="ticks">
-        <li><b>dbt Cloud, BigQuery, Amplitude, RudderStack y GitHub</b>, revisados sin IA y sin costo; una alerta por cosa que falla, con su gravedad.</li>
+        <li><b>GitHub Actions, dbt Cloud, BigQuery, Amplitude y RudderStack</b>, revisados sin IA y sin costo; una alerta por cosa que falla, con su gravedad.</li>
         <li><b>Análisis con un clic</b>: causa probable, impacto, si ya pasó antes y cómo se resolvió, y la solución como tarea.</li>
         <li><b>Busca runbooks y postmortems</b> en tus documentos y lo que se dijo en el chat.</li>
         <li><b>Radar y plan de fallos</b>: los problemas que nadie está viendo, y todos los fallos agrupados por causa.</li>
       </ul>
     </div>
     <div class="panel scene halftone">
-      <div class="alert-head"><span class="pulse"></span><span class="t">fct_orders no se construye</span><span class="chip c-alta">Alta</span></div>
+      <div class="alert-head"><span class="pulse"></span><span class="t">El deploy a producción falla en main</span><span class="chip c-alta">Alta</span></div>
       <div class="analysis">
-        <div class="node"><div class="lbl">Causa probable · confianza alta</div><p>Un cambio de esquema en la fuente de pagos rompió el join desde el martes.</p></div>
-        <div class="node"><div class="lbl">Impacto</div><p>Deja sin actualizar 6 modelos, entre ellos el tablero de ingresos de dirección.</p></div>
-        <div class="node" style="background:var(--mint)"><div class="lbl">Solución propuesta</div><p>Ajustar el tipo de <code style="font-family:var(--mono)">payment_id</code> y correr el job de nuevo · <b>Camila</b></p>
+        <div class="node"><div class="lbl">Causa probable · confianza alta</div><p>Una dependencia actualizada el martes rompió los tests de integración del módulo de pagos.</p></div>
+        <div class="node"><div class="lbl">Impacto</div><p>Los cambios de 3 personas están frenados y el arreglo del checkout no llega a producción.</p></div>
+        <div class="node" style="background:var(--mint)"><div class="lbl">Solución propuesta</div><p>Fijar la versión de la librería de pagos y volver a correr el workflow · <b>Camila</b></p>
           <div class="src"><span class="chip c-v">Runbook en Drive</span><span class="chip c-req">Hilo en Slack</span><span class="chip c-due">Pasó en agosto</span></div></div>
       </div>
     </div>
@@ -415,7 +429,7 @@
       <div class="panel card"><div class="ico" style="background:var(--sun)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></div><h3>Con o sin herramienta de tareas</h3><p>Conecta Notion o ClickUp, o usa la lista propia de Guildmaster, cifrada en tu computador.</p></div>
       <div class="panel card"><div class="ico" style="background:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></div><h3>IA que conoce a tu equipo</h3><p>Cada análisis parte de lo que la app aprendió: la estrategia, los documentos de la empresa y cómo trabaja el equipo.</p></div>
       <div class="panel card"><div class="ico" style="background:var(--rose)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><h3>Avisos que llegan a tiempo</h3><p>Notificaciones de escritorio para lo nuevo que importa: un pedido, una alerta de gravedad alta, una versión nueva.</p></div>
-      <div class="panel card"><div class="ico" style="background:var(--mint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></div><h3>Siempre al día</h3><p>En Windows se actualiza sola; en Mac te avisa cuando hay una versión nueva.</p></div>
+      <div class="panel card"><div class="ico" style="background:var(--mint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></div><h3>Mejora cada semana</h3><p>Cada versión trae funciones nuevas, y te llegan sin que tengas que buscarlas.</p></div>
     </div>
   </div>
 </section>
@@ -468,13 +482,17 @@
   </div>
 </section>
 
-<section class="more" style="padding-top:24px;border-top:0">
+<section class="more" id="integraciones">
   <div class="wrap">
-    <div class="section-head">
-      <span class="caption light">Se conecta con</span>
-      <h2>Con las herramientas que ya usas.</h2>
+    <div class="integ-head">
+      <div class="section-head" style="margin-bottom:0">
+        <span class="caption light">Se conecta con</span>
+        <h2>Con las herramientas que ya usas.</h2>
+        <p>No tienes que mudarte: Guildmaster lee las tuyas y te trae lo importante. Y si no tienes ninguna, trae su propia lista de tareas.</p>
+      </div>
+      <div class="integ-count panel halftone"><span class="big">14</span><span>integraciones, y contando</span></div>
     </div>
-    <div class="tools"><span>Notion</span><span>ClickUp</span><span>Slack</span><span>Microsoft Teams</span><span>Google Chat</span><span>Gmail</span><span>Google Calendar</span><span>Google Drive</span><span>GitHub</span><span>dbt Cloud</span><span>BigQuery</span><span>Amplitude</span><span>RudderStack</span><span>Workable</span></div>
+    <div class="tool-grid panel halftone"><div class="tool"><span class="cat">Tareas</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/></svg><span>Notion</span></div><div class="tool"><span class="cat">Tareas</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 18.439l3.69-2.828c1.961 2.56 4.044 3.739 6.363 3.739 2.307 0 4.33-1.166 6.203-3.704L22 18.405C19.298 22.065 15.941 24 12.053 24 8.178 24 4.788 22.078 2 18.439zM12.04 6.15l-6.568 5.66-3.036-3.52L12.055 0l9.543 8.296-3.05 3.509z"/></svg><span>ClickUp</span></div><div class="tool"><span class="cat">Chat</span><span class="mono" aria-hidden="true">S</span><span>Slack</span></div><div class="tool"><span class="cat">Chat</span><span class="mono" aria-hidden="true">T</span><span>Microsoft Teams</span></div><div class="tool"><span class="cat">Chat</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.637 0C.733 0 0 .733 0 1.637v16.5c0 .904.733 1.636 1.637 1.636h3.955v3.323c0 .804.97 1.207 1.539.638l3.963-3.96h11.27c.903 0 1.636-.733 1.636-1.637V5.592L18.408 0Zm3.955 5.592h12.816v8.59H8.455l-2.863 2.863Z"/></svg><span>Google Chat</span></div><div class="tool"><span class="cat">Correo</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span>Gmail</span></div><div class="tool"><span class="cat">Calendario</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.316 5.684H24v12.632h-5.684V5.684zM5.684 24h12.632v-5.684H5.684V24zM18.316 5.684V0H1.895A1.894 1.894 0 0 0 0 1.895v16.421h5.684V5.684h12.632zm-7.207 6.25v-.065c.272-.144.5-.349.687-.617s.279-.595.279-.982c0-.379-.099-.72-.3-1.025a2.05 2.05 0 0 0-.832-.714 2.703 2.703 0 0 0-1.197-.257c-.6 0-1.094.156-1.481.467-.386.311-.65.671-.793 1.078l1.085.452c.086-.249.224-.461.413-.633.189-.172.445-.257.767-.257.33 0 .602.088.816.264a.86.86 0 0 1 .322.703c0 .33-.12.589-.36.778-.24.19-.535.284-.886.284h-.567v1.085h.633c.407 0 .748.109 1.02.327.272.218.407.499.407.843 0 .336-.129.614-.387.832s-.565.327-.924.327c-.351 0-.651-.103-.897-.311-.248-.208-.422-.502-.521-.881l-1.096.452c.178.616.505 1.082.977 1.401.472.319.984.478 1.538.477a2.84 2.84 0 0 0 1.293-.291c.382-.193.684-.458.902-.794.218-.336.327-.72.327-1.149 0-.429-.115-.797-.344-1.105a2.067 2.067 0 0 0-.881-.689zm2.093-1.931l.602.913L15 10.045v5.744h1.187V8.446h-.827l-2.158 1.557zM22.105 0h-3.289v5.184H24V1.895A1.894 1.894 0 0 0 22.105 0zm-3.289 23.5l4.684-4.684h-4.684V23.5zM0 22.105C0 23.152.848 24 1.895 24h3.289v-5.184H0v3.289z"/></svg><span>Google Calendar</span></div><div class="tool"><span class="cat">Documentos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.01 1.485c-2.082 0-3.754.02-3.743.047.01.02 1.708 3.001 3.774 6.62l3.76 6.574h3.76c2.081 0 3.753-.02 3.742-.047-.005-.02-1.708-3.001-3.775-6.62l-3.76-6.574zm-4.76 1.73a789.828 789.861 0 0 0-3.63 6.319L0 15.868l1.89 3.298 1.885 3.297 3.62-6.335 3.618-6.33-1.88-3.287C8.1 4.704 7.255 3.22 7.25 3.214zm2.259 12.653-.203.348c-.114.198-.96 1.672-1.88 3.287a423.93 423.948 0 0 1-1.698 2.97c-.01.026 3.24.042 7.222.042h7.244l1.796-3.157c.992-1.734 1.85-3.23 1.906-3.323l.104-.167h-7.249z"/></svg><span>Google Drive</span></div><div class="tool"><span class="cat">Personas</span><span class="mono" aria-hidden="true">W</span><span>Workable</span></div><div class="tool"><span class="cat">Código</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span>GitHub</span></div><div class="tool"><span class="cat">Datos</span><span class="mono" aria-hidden="true">dbt</span><span>dbt Cloud</span></div><div class="tool"><span class="cat">Datos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.676 10.595h2.052v5.244a5.892 5.892 0 0 1-2.052-2.088v-3.156zm18.179 10.836a.504.504 0 0 1 0 .708l-1.716 1.716a.504.504 0 0 1-.708 0l-4.248-4.248a.206.206 0 0 1-.007-.007c-.02-.02-.028-.045-.043-.066a10.736 10.736 0 0 1-6.334 2.065C4.835 21.599 0 16.764 0 10.799S4.835 0 10.8 0s10.799 4.835 10.799 10.8c0 2.369-.772 4.553-2.066 6.333.025.017.052.028.074.05l4.248 4.248zm-5.028-10.632a8.015 8.015 0 1 0-8.028 8.028h.024a8.016 8.016 0 0 0 8.004-8.028zm-4.86 4.98a6.002 6.002 0 0 0 2.04-2.184v-1.764h-2.04v3.948zm-4.5.948c.442.057.887.08 1.332.072.4.025.8.025 1.2 0V7.692H9.468v9.035z"/></svg><span>BigQuery</span></div><div class="tool"><span class="cat">Producto</span><span class="mono" aria-hidden="true">A</span><span>Amplitude</span></div><div class="tool"><span class="cat">Eventos</span><span class="mono" aria-hidden="true">R</span><span>RudderStack</span></div></div>
   </div>
 </section>
 
