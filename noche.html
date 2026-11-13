@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guildmaster · Toma el control de tu trabajo</title>
+<meta name="description" content="Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad. Para Windows y Mac.">
+<meta property="og:title" content="Guildmaster · Toma el control de tu trabajo">
+<meta property="og:description" content="Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad.">
+<meta name="theme-color" content="#06080b">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+  :root {
+    color-scheme: dark;
+    --paper: #06080b; --white: #11161d; --ink: #eef1f5; --ink-2: #a9b1bd; --ink-3: #6b7480;
+    --line: #d5dbe3;
+    /* Night: Guildmaster's own surfaces, light strokes, the green as the only accent and its flat shadow; red only for alerts. */
+    --accent: #34d399; --accent-2: #6ee7b7; --accent-mid: #1f8f68; --mint: #0f2a20; --gray: #1b222c;
+    --sky: var(--gray); --sun: var(--gray); --violet: var(--gray); --blue: var(--accent-2); --rose: #3a1716; --red: #f87171;
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", "Helvetica Neue", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, "Cascadia Mono", Consolas, monospace;
+    --sh: #34d399; --on-accent: #04130d; --art: #0b0f14; --root-bg: #34d399; --root-ink: #04130d; --nav: rgba(6,8,11,0.88);
+    --shadow: 5px 5px 0 var(--sh);
+    --dots: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1.4px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
+
+  /* Comic language, kept sober: ink outlines, flat offset shadows, halftone, caption boxes, speech bubbles. */
+  .panel { background: var(--white); border: 2.5px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); position: relative; min-width: 0; }
+  .halftone { background-image: var(--dots); background-size: 7px 7px; }
+  .caption { display: inline-block; font: 700 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; background: var(--accent); color: var(--on-accent); border: 2px solid var(--line); padding: 7px 10px 6px; border-radius: 4px; }
+  .caption.light { background: var(--white); color: var(--ink); }
+  .bubble { position: relative; background: var(--white); border: 2.5px solid var(--line); border-radius: 18px; padding: 12px 14px; font-size: 14px; }
+  .bubble::after { content: ""; position: absolute; left: 26px; bottom: -14px; width: 18px; height: 14px; background: var(--white); border-right: 2.5px solid var(--line); border-bottom: 2.5px solid var(--line); transform: skewX(-35deg); border-bottom-right-radius: 4px; }
+  .mark-hl { background: linear-gradient(transparent 58%, var(--mint) 58%); padding: 0 2px; }
+
+  nav { position: sticky; top: 0; z-index: 10; background: var(--nav); backdrop-filter: blur(10px); border-bottom: 2.5px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 12px; }
+  .brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 750; letter-spacing: -0.01em; font-size: 18px; text-decoration: none; }
+  .brand b { color: var(--accent-2); }
+  .nav-links { display: none; gap: 22px; font-size: 14px; font-weight: 550; }
+  .nav-links a { text-decoration: none; color: var(--ink-2); }
+  .nav-links a:hover { color: var(--ink); }
+  @media (min-width: 900px) { .nav-links { display: flex; } }
+  .btn { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; text-decoration: none; border: 2.5px solid var(--line); border-radius: 10px; background: var(--white); padding: 8px 14px; font-size: 14px; box-shadow: 3px 3px 0 var(--sh); transition: transform .12s ease, box-shadow .12s ease; }
+  .btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--sh); }
+  .btn.primary { background: var(--accent); color: var(--on-accent); font-size: 16.5px; padding: 14px 22px; box-shadow: var(--shadow); }
+  .btn.primary:hover { box-shadow: 7px 7px 0 var(--sh); }
+  .btn.off { opacity: .55; pointer-events: none; }
+  .btn svg { width: 18px; height: 18px; }
+  .btn.mini { padding: 5px 10px; font-size: 12.5px; box-shadow: 2px 2px 0 var(--sh); }
+
+  .hero { padding: 56px 0 40px; }
+  @media (min-width: 960px) { .hero { padding: 80px 0 56px; } }
+  .hero-grid { display: grid; gap: 44px; align-items: center; }
+  .hero-grid > * { min-width: 0; }
+  @media (min-width: 980px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
+  h1 { font-size: clamp(42px, 7vw, 72px); line-height: 0.98; letter-spacing: -0.04em; margin: 18px 0 22px; font-weight: 800; }
+  .lead { font-size: clamp(17px, 2vw, 19.5px); color: var(--ink-2); max-width: 540px; margin: 0 0 30px; }
+  .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .meta { color: var(--ink-3); font-size: 13.5px; }
+  .others { margin-top: 18px; font-size: 13.5px; color: var(--ink-3); }
+  .others a { color: var(--ink-2); font-weight: 600; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+  .proof { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .proof span { font: 600 12px var(--mono); border: 2px solid var(--line); border-radius: 99px; padding: 5px 10px; background: var(--white); }
+
+  .hero-comic { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+  .hero-comic > * { min-width: 0; }
+  .hero-comic .panel { padding: 14px; }
+  .hero-comic .big { grid-column: 1 / -1; }
+  .ph { font: 700 10.5px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 8px; margin-bottom: 7px; font-size: 13.5px; background: var(--white); min-width: 0; }
+  .row .t { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .box { width: 15px; height: 15px; border: 2px solid var(--line); border-radius: 4px; flex: none; }
+  .box.on { background: var(--accent); }
+  .chip { font: 700 10.5px/1 var(--mono); padding: 5px 7px; border-radius: 5px; border: 1.5px solid var(--line); white-space: nowrap; }
+  .c-obj { background: var(--mint); } .c-req { background: var(--sky); } .c-due { background: var(--sun); } .c-alta { background: var(--rose); } .c-v { background: var(--violet); }
+  .meter { height: 12px; border: 2px solid var(--line); border-radius: 99px; overflow: hidden; display: flex; background: var(--white); }
+  .meter i { display: block; height: 100%; border-right: 2px solid var(--line); }
+  .meter i:last-child { border-right: 0; }
+  .kpi { font: 800 30px/1 var(--sans); letter-spacing: -0.03em; }
+  .kpi small { font: 600 12px var(--sans); color: var(--ink-3); letter-spacing: 0; margin-left: 4px; }
+  .days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; font: 700 11px var(--mono); text-align: center; }
+  .days .col { height: 52px; border: 2px solid var(--line); border-radius: 6px; margin-top: 5px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; background: var(--white); }
+  .days .col i { display: block; background: var(--accent); border-top: 2px solid var(--line); }
+
+  .strip-sec { padding: 40px 0 72px; }
+  .strip { display: grid; gap: 22px; }
+  .strip > * { min-width: 0; }
+  @media (min-width: 760px) { .strip { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .strip { grid-template-columns: repeat(4, 1fr); } }
+  .frame { padding: 22px 16px 18px; display: flex; flex-direction: column; gap: 14px; }
+  .frame .n { position: absolute; top: -14px; left: 14px; }
+  .frame h3 { margin: 0; font-size: 17px; letter-spacing: -0.01em; }
+  .frame p { margin: 0; font-size: 14px; color: var(--ink-2); }
+  .frame .art { min-height: 128px; display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 12px; border: 2px solid var(--line); border-radius: 6px; background-color: var(--art); }
+
+  .feat { padding: 64px 0; border-top: 2.5px solid var(--line); }
+  .feat-grid { display: grid; gap: 40px; align-items: center; }
+  .feat-grid > * { min-width: 0; }
+  @media (min-width: 980px) { .feat-grid { grid-template-columns: 1fr 1.05fr; gap: 64px; } .feat.flip .feat-copy { order: 2; } }
+  h2 { font-size: clamp(30px, 4.4vw, 46px); line-height: 1.04; letter-spacing: -0.035em; margin: 16px 0 14px; font-weight: 800; }
+  .feat-copy > p { color: var(--ink-2); font-size: 17px; margin: 0 0 22px; }
+  .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .ticks li { position: relative; padding-left: 34px; font-size: 15.5px; color: var(--ink-2); }
+  .ticks li b { color: var(--ink); }
+  .ticks li::before { content: ""; position: absolute; left: 0; top: 2px; width: 20px; height: 20px; border: 2px solid var(--line); border-radius: 5px; background: var(--mint); }
+  .ticks li::after { content: ""; position: absolute; left: 6px; top: 7px; width: 9px; height: 5px; border-left: 2.5px solid var(--line); border-bottom: 2.5px solid var(--line); transform: rotate(-45deg); }
+  .scene { padding: 18px; }
+  .scene .bubble { margin-bottom: 22px; }
+  .arrow { text-align: center; font: 800 20px var(--mono); margin: 2px 0 8px; }
+  .tree { display: grid; gap: 10px; }
+  .node { border: 2px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--white); min-width: 0; }
+  .node.root { background: var(--root-bg); color: var(--root-ink); }
+  .node .lbl { font: 700 10px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; opacity: .7; margin-bottom: 6px; }
+  .node .ttl { font-weight: 700; font-size: 14.5px; }
+  .node .pr { display: flex; align-items: center; gap: 10px; margin-top: 8px; font: 600 12px var(--mono); }
+  .node .pr .meter { flex: 1; height: 10px; }
+  .children { display: grid; gap: 10px; padding-left: 16px; border-left: 2.5px dashed var(--line); margin-left: 10px; }
+  .person { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 10px; border: 2px solid var(--line); border-radius: 8px; margin-bottom: 8px; background: var(--white); }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font: 800 12px var(--sans); }
+  .person .name { font-weight: 700; font-size: 14px; }
+  .person .meter { height: 9px; margin-top: 5px; }
+  .alert-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 2.5px solid var(--line); border-radius: 8px; background: var(--rose); }
+  .alert-head .t { flex: 1; min-width: 0; font-weight: 700; font-size: 14px; }
+  .pulse { width: 12px; height: 12px; border-radius: 50%; background: var(--red); border: 2px solid var(--line); flex: none; animation: pulse 1.6s infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .analysis { margin-top: 12px; display: grid; gap: 8px; }
+  .analysis .node p { margin: 4px 0 0; font-size: 13.5px; color: var(--ink-2); }
+  .src, .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+  .more { padding: 72px 0; border-top: 2.5px solid var(--line); }
+  .section-head { max-width: 680px; margin-bottom: 36px; }
+  .section-head p { color: var(--ink-2); margin: 0; font-size: 17px; }
+  .cards { display: grid; gap: 18px; }
+  .cards > * { min-width: 0; }
+  @media (min-width: 700px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1020px) { .cards { grid-template-columns: repeat(3, 1fr); } }
+  .card { padding: 20px; }
+  .ico { width: 40px; height: 40px; border: 2px solid var(--line); border-radius: 9px; display: grid; place-items: center; margin-bottom: 14px; flex: none; }
+  .ico svg { width: 20px; height: 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 16.5px; letter-spacing: -0.01em; }
+  .card p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
+  .roles { display: grid; gap: 22px; }
+  .roles > * { min-width: 0; }
+  @media (min-width: 860px) { .roles { grid-template-columns: 1fr 1fr; } }
+  .role { padding: 26px; }
+  .role h3 { font-size: 22px; margin: 14px 0 16px; letter-spacing: -0.02em; }
+  .privacy { display: grid; gap: 24px; padding: 30px; }
+  .privacy > * { min-width: 0; }
+  @media (min-width: 900px) { .privacy { grid-template-columns: 1fr 1.2fr; padding: 40px; align-items: center; } }
+  .points { display: grid; gap: 14px; }
+  .point { display: flex; gap: 14px; }
+  .point .ico { width: 38px; height: 38px; margin: 0; background: var(--mint); }
+  .point h4 { margin: 2px 0 3px; font-size: 15.5px; }
+  .point p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
+  .tools { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tools span { font-size: 14px; font-weight: 600; padding: 8px 13px; border: 2px solid var(--line); border-radius: 8px; background: var(--white); box-shadow: 2px 2px 0 var(--sh); }
+  .steps { display: grid; gap: 26px; counter-reset: s; }
+  .steps > * { min-width: 0; }
+  @media (min-width: 860px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  .step { padding: 24px 22px 22px; }
+  .step::before { counter-increment: s; content: counter(s); position: absolute; top: -17px; left: 18px; width: 32px; height: 32px; border: 2.5px solid var(--line); border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font: 800 14px var(--sans); }
+  .step h3 { font-size: 17px; margin: 6px 0 8px; }
+  .step p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
+  .final { padding: 80px 0; border-top: 2.5px solid var(--line); }
+  .final .panel { padding: 44px 24px; text-align: center; background-color: var(--mint); }
+  .final h2 { margin: 14px auto 12px; max-width: 760px; }
+  .final p { color: var(--ink-2); margin: 0 auto 28px; max-width: 540px; font-size: 17px; }
+  .final .cta-row { justify-content: center; }
+  footer { border-top: 2.5px solid var(--line); padding: 26px 0 40px; color: var(--ink-3); font-size: 13.5px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+  footer a { color: var(--ink-2); font-weight: 600; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#0B7F5A"/></linearGradient>
+    <symbol id="mark" viewBox="0 0 64 64">
+      <rect x="12" y="6" width="3.5" height="52" rx="1.75" fill="url(#gm)"/>
+      <path d="M18 9 H34 L31 14 L34 19 H18 Z" fill="url(#gm)" opacity=".55"/>
+      <path d="M18 23 H42 L39 28 L42 33 H18 Z" fill="url(#gm)" opacity=".8"/>
+      <path d="M18 37 H52 L49 42 L52 47 H18 Z" fill="url(#gm)"/>
+    </symbol>
+    <symbol id="dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><svg width="28" height="28"><use href="#mark"/></svg><span>Guild<b>master</b></span></a>
+    <div class="nav-links"><a href="#planear">Planear</a><a href="#objetivos">Objetivos</a><a href="#seguimiento">Seguimiento</a><a href="#alertas">Alertas</a></div>
+    <a class="btn" href="#descargar">Descargar</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="caption">El centro de mando de tu trabajo</span>
+      <h1>Toma el control de <span class="mark-hl">tu trabajo.</span></h1>
+      <p class="lead">Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad.</p>
+      <div class="cta-row" id="descargar">
+        <a id="main" class="btn primary" href="https://github.com/guildmaster-app/releases/releases/latest"><svg><use href="#dl"/></svg><span id="main-label">Descargar Guildmaster</span></a>
+        <span id="meta" class="meta">Para Windows y Mac</span>
+      </div>
+      <div class="others" id="others">
+        También para
+        <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Windows.exe">Windows</a>,
+        <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-arm64.dmg">Mac con chip de Apple</a> y
+        <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-x64.dmg">Mac con Intel</a>
+      </div>
+      <div class="proof"><span>14 integraciones</span><span>IA que conoce a tu equipo</span><span>Cifrado AES-256</span><span>Se actualiza sola</span></div>
+    </div>
+
+    <div class="hero-comic" aria-hidden="true">
+      <div class="panel big halftone">
+        <div class="ph">Hoy · lo que te cabe</div>
+        <div class="meter" style="margin-bottom:12px"><i style="width:46%;background:var(--accent)"></i><i style="width:22%;background:var(--accent-mid)"></i><i style="width:14%;background:var(--mint)"></i></div>
+        <div class="row"><span class="box on"></span><span class="t">Cerrar el tablero de retención</span><span class="chip c-obj">Objetivo Q4</span></div>
+        <div class="row"><span class="box"></span><span class="t">Revisar la propuesta de precios</span><span class="chip c-due">Vence hoy</span></div>
+        <div class="row" style="margin-bottom:0"><span class="box"></span><span class="t">Ventas de octubre para Finanzas</span><span class="chip c-req">Pedido</span></div>
+      </div>
+      <div class="panel">
+        <div class="ph">Objetivos</div>
+        <div class="kpi">68%<small>del Q4</small></div>
+        <div class="meter" style="margin-top:10px"><i style="width:68%;background:var(--accent)"></i></div>
+      </div>
+      <div class="panel" style="background:var(--rose)">
+        <div class="ph" style="color:var(--ink-2)">Alertas</div>
+        <div class="kpi">1<small>alta · dbt</small></div>
+        <div style="font-size:12.5px;margin-top:8px;color:var(--ink-2)">Causa y solución propuestas</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="strip-sec">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="caption light">Cómo funciona</span>
+      <h2>De un mensaje perdido a un objetivo que avanza.</h2>
+    </div>
+    <div class="strip">
+      <div class="panel frame">
+        <span class="caption n">1 · Llega</span>
+        <div class="art halftone">
+          <div class="bubble" style="font-size:13px">¿Me pasas las ventas de octubre antes del viernes?</div>
+          <div style="font:600 11px var(--mono);color:var(--ink-3);margin-top:8px">Slack · Teams · Google Chat · Gmail</div>
+        </div>
+        <h3>Te piden algo</h3>
+        <p>La IA lee tus menciones, mensajes y correos, y reconoce los pedidos reales.</p>
+      </div>
+      <div class="panel frame">
+        <span class="caption n">2 · Se ordena</span>
+        <div class="art halftone">
+          <div class="row" style="margin:0"><span class="box"></span><span class="t">Ventas de octubre</span><span class="chip c-due">Vie</span></div>
+          <div class="tags" style="margin:0"><span class="chip c-alta">Urgente</span><span class="chip c-v">Esfuerzo 3</span><span class="chip c-obj">Objetivo</span></div>
+        </div>
+        <h3>Se vuelve tarea</h3>
+        <p>Con prioridad, esfuerzo y fecha sugeridos, en tu herramienta o en la de Guildmaster.</p>
+      </div>
+      <div class="panel frame">
+        <span class="caption n">3 · Se planea</span>
+        <div class="art halftone">
+          <div style="font:600 11.5px var(--mono);display:flex;justify-content:space-between"><span>Semana</span><span>26 / 30 h</span></div>
+          <div class="meter"><i style="width:58%;background:var(--accent)"></i><i style="width:28%;background:var(--accent-mid)"></i></div>
+          <div style="font-size:12.5px;color:var(--ink-2)">Entra el jueves, después de tus reuniones.</div>
+        </div>
+        <h3>Entra en tu semana</h3>
+        <p>Según lo que de verdad te cabe, con tus reuniones y tu ritmo.</p>
+      </div>
+      <div class="panel frame">
+        <span class="caption n">4 · Suma</span>
+        <div class="art halftone">
+          <div class="node" style="padding:8px 10px"><div class="lbl">Objetivo</div><div class="ttl" style="font-size:13.5px">Finanzas cierra sin conciliar a mano</div>
+            <div class="pr"><div class="meter"><i style="width:72%;background:var(--accent)"></i></div>72%</div></div>
+        </div>
+        <h3>Empuja un objetivo</h3>
+        <p>Cada tarea dice a qué aporta: ves el avance real, no el que alguien reporta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feat" id="planear">
+  <div class="wrap feat-grid">
+    <div class="feat-copy">
+      <span class="caption">Planear</span>
+      <h2>Sabe qué hacer hoy, y que nada se te escape.</h2>
+      <p>Guildmaster identifica el trabajo que llega por todos lados y lo convierte en un plan realista.</p>
+      <ul class="ticks">
+        <li><b>Pedidos detectados por IA</b> en Slack, Teams, Google Chat y Gmail, con quién lo pidió, para quién y desde dónde.</li>
+        <li><b>Tu semana según tu capacidad</b>: prioriza contra tus reuniones y tu ritmo, y te avisa lo que vence, se atrasa o se bloquea.</li>
+        <li><b>Proyectos partidos en hitos y tareas</b>, con un cronograma que respeta la carga de cada persona.</li>
+        <li><b>Lo que pediste y sigue sin respuesta</b>, para no tener que acordarte de todo.</li>
+      </ul>
+    </div>
+    <div class="panel scene halftone">
+      <div class="bubble"><b>Ana · #finanzas</b><br>¿Puedes revisar el cierre de cartera antes del viernes?</div>
+      <div class="arrow">↓</div>
+      <div class="node" style="margin-bottom:12px">
+        <div class="lbl">Pedido detectado</div>
+        <div class="ttl">Revisar el cierre de cartera</div>
+        <div class="tags"><span class="chip c-alta">Urgente</span><span class="chip c-due">Vence vie</span><span class="chip c-v">Esfuerzo 2</span><span class="chip c-obj">Cierre sin fricción</span></div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><span class="btn mini" style="background:var(--accent);color:var(--on-accent)">Guardar como tarea</span><span class="btn mini">Ya se resolvió</span></div>
+      </div>
+      <div class="node">
+        <div class="lbl">Tu semana</div>
+        <div class="days">
+          <div>L<div class="col"><i style="height:80%"></i></div></div>
+          <div>M<div class="col"><i style="height:95%"></i></div></div>
+          <div>M<div class="col"><i style="height:60%"></i></div></div>
+          <div>J<div class="col"><i style="height:70%;background:var(--accent-mid)"></i></div></div>
+          <div>V<div class="col"><i style="height:45%"></i></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feat flip" id="objetivos">
+  <div class="wrap feat-grid">
+    <div class="feat-copy">
+      <span class="caption">Objetivos</span>
+      <h2>Que el trabajo de todos los días empuje lo que importa.</h2>
+      <p>De la estrategia a la tarea, en una sola línea: sabes qué parte del esfuerzo mueve los objetivos y cuál se va en el día a día.</p>
+      <ul class="ticks">
+        <li><b>Estrategia, objetivos, proyectos y tareas</b> conectados, con cómo se mide cada objetivo.</li>
+        <li><b>El plan del trimestre en minutos</b>: tráelo de un documento de Drive o ármalo con la app a partir del trabajo real del equipo.</li>
+        <li><b>Cada tarea dice a qué objetivo aporta</b>, clasificada por la IA y corregida por ti.</li>
+        <li><b>Revisión con evidencia</b>: el avance sale de lo que se hizo, no de un reporte.</li>
+      </ul>
+    </div>
+    <div class="panel scene halftone">
+      <div class="tree">
+        <div class="node root"><div class="lbl">Estrategia Q4</div><div class="ttl">Decisiones con datos en los que el negocio confía</div></div>
+        <div class="children">
+          <div class="node"><div class="lbl">Objetivo</div><div class="ttl">Finanzas cierra el mes sin conciliar a mano</div><div class="pr"><div class="meter"><i style="width:72%;background:var(--accent)"></i></div>72%</div></div>
+          <div class="node"><div class="lbl">Objetivo</div><div class="ttl">El tablero de dirección nunca falla</div><div class="pr"><div class="meter"><i style="width:54%;background:var(--accent)"></i></div>54%</div></div>
+          <div class="node"><div class="lbl">Objetivo</div><div class="ttl">Un agente que responde preguntas sobre los datos</div><div class="pr"><div class="meter"><i style="width:31%;background:var(--accent-mid)"></i></div>31%</div></div>
+        </div>
+        <div class="node" style="background:var(--mint)"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 10px;font:700 12.5px var(--mono)"><span>Esta semana</span><span>64% empuja objetivos · 36% día a día</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feat" id="seguimiento">
+  <div class="wrap feat-grid">
+    <div class="feat-copy">
+      <span class="caption">Seguimiento</span>
+      <h2>Todo el avance a la vista, sin pedir reportes.</h2>
+      <p>Para quien lidera: la foto real del equipo, todos los días. Para quien hace el trabajo: sus pendientes y su progreso, sin reportar a mano.</p>
+      <ul class="ticks">
+        <li><b>La carga de cada persona</b> frente a lo que le cabe, con lo vencido, lo bloqueado y lo que está en riesgo.</li>
+        <li><b>Tus 1:1 preparados</b> con el trabajo, los logros y el crecimiento de cada quien.</li>
+        <li><b>El contexto del equipo</b>: una memoria que aprende cómo trabajan y qué vocabulario usan.</li>
+        <li><b>Progreso que motiva</b>: niveles, temporadas, misiones y personajes por desbloquear, sin rankings ni comparaciones.</li>
+      </ul>
+    </div>
+    <div class="panel scene halftone">
+      <div class="ph">Tu equipo esta semana</div>
+      <div class="person"><span class="avatar" style="background:var(--mint)">LM</span><div><div class="name">Laura</div><div class="meter"><i style="width:78%;background:var(--accent)"></i></div></div><span class="chip c-obj">En ritmo</span></div>
+      <div class="person"><span class="avatar" style="background:var(--sky)">JR</span><div><div class="name">Julián</div><div class="meter"><i style="width:100%;background:var(--red)"></i></div></div><span class="chip c-alta">Sobrecargado</span></div>
+      <div class="person"><span class="avatar" style="background:var(--sun)">CP</span><div><div class="name">Camila</div><div class="meter"><i style="width:55%;background:var(--accent)"></i></div></div><span class="chip c-due">2 vencidas</span></div>
+      <div class="person" style="margin-bottom:0"><span class="avatar" style="background:var(--violet)">DS</span><div><div class="name">Daniel</div><div class="meter"><i style="width:64%;background:var(--accent)"></i></div></div><span class="chip c-v">1:1 mañana</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="feat flip" id="alertas">
+  <div class="wrap feat-grid">
+    <div class="feat-copy">
+      <span class="caption">Alertas</span>
+      <h2>Detecta los fallos antes de que se acumulen.</h2>
+      <p>Para equipos de datos: Guildmaster vigila tus herramientas y, cuando algo se rompe, investiga con el contexto de tu equipo.</p>
+      <ul class="ticks">
+        <li><b>dbt Cloud, BigQuery, Amplitude, RudderStack y GitHub</b>, revisados sin IA y sin costo; una alerta por cosa que falla, con su gravedad.</li>
+        <li><b>Análisis con un clic</b>: causa probable, impacto, si ya pasó antes y cómo se resolvió, y la solución como tarea.</li>
+        <li><b>Busca runbooks y postmortems</b> en tus documentos y lo que se dijo en el chat.</li>
+        <li><b>Radar y plan de fallos</b>: los problemas que nadie está viendo, y todos los fallos agrupados por causa.</li>
+      </ul>
+    </div>
+    <div class="panel scene halftone">
+      <div class="alert-head"><span class="pulse"></span><span class="t">fct_orders no se construye</span><span class="chip c-alta">Alta</span></div>
+      <div class="analysis">
+        <div class="node"><div class="lbl">Causa probable · confianza alta</div><p>Un cambio de esquema en la fuente de pagos rompió el join desde el martes.</p></div>
+        <div class="node"><div class="lbl">Impacto</div><p>Deja sin actualizar 6 modelos, entre ellos el tablero de ingresos de dirección.</p></div>
+        <div class="node" style="background:var(--mint)"><div class="lbl">Solución propuesta</div><p>Ajustar el tipo de <code style="font-family:var(--mono)">payment_id</code> y correr el job de nuevo · <b>Camila</b></p>
+          <div class="src"><span class="chip c-v">Runbook en Drive</span><span class="chip c-req">Hilo en Slack</span><span class="chip c-due">Pasó en agosto</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="more">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="caption light">Y además</span>
+      <h2>Hecho para el trabajo real.</h2>
+      <p>Lo que hace que Guildmaster se sienta como un equipo de apoyo y no como otra herramienta más.</p>
+    </div>
+    <div class="cards">
+      <div class="panel card"><div class="ico" style="background:var(--mint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><h3>Tu crecimiento, con evidencia</h3><p>Tus logros se registran con la prueba de tu trabajo, listos para tu próxima conversación de crecimiento.</p></div>
+      <div class="panel card"><div class="ico" style="background:var(--sky)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><h3>Un perfil con personalidad</h3><p>Elige tu personaje en dos estilos de ilustración, desbloquea más al subir de nivel y viste los accesorios de cada temporada.</p></div>
+      <div class="panel card"><div class="ico" style="background:var(--sun)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></div><h3>Con o sin herramienta de tareas</h3><p>Conecta Notion o ClickUp, o usa la lista propia de Guildmaster, cifrada en tu computador.</p></div>
+      <div class="panel card"><div class="ico" style="background:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></div><h3>IA que conoce a tu equipo</h3><p>Cada análisis parte de lo que la app aprendió: la estrategia, los documentos de la empresa y cómo trabaja el equipo.</p></div>
+      <div class="panel card"><div class="ico" style="background:var(--rose)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><h3>Avisos que llegan a tiempo</h3><p>Notificaciones de escritorio para lo nuevo que importa: un pedido, una alerta de gravedad alta, una versión nueva.</p></div>
+      <div class="panel card"><div class="ico" style="background:var(--mint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></div><h3>Siempre al día</h3><p>En Windows se actualiza sola; en Mac te avisa cuando hay una versión nueva.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="more">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="caption light">Para quién</span>
+      <h2>Para quien hace el trabajo y para quien lo lidera.</h2>
+    </div>
+    <div class="roles">
+      <div class="panel role">
+        <span class="caption">Organizo mi trabajo</span>
+        <h3>Saca adelante lo tuyo, y crece.</h3>
+        <ul class="ticks">
+          <li>Tu semana priorizada contra tu ritmo y tus reuniones</li>
+          <li>Lo que te piden, y lo que pediste y sigue sin respuesta</li>
+          <li>Tus proyectos y objetivos, con seguimiento hasta el final</li>
+          <li>Tus logros y tu progreso, siempre a la vista</li>
+        </ul>
+      </div>
+      <div class="panel role">
+        <span class="caption" style="background:var(--ink)">Lidero un equipo</span>
+        <h3>La foto real del equipo, todos los días.</h3>
+        <ul class="ticks">
+          <li>La carga de cada persona y lo que está en riesgo</li>
+          <li>Los pedidos de otras áreas, ordenados y convertidos en tareas</li>
+          <li>Los objetivos del trimestre con su avance de verdad</li>
+          <li>Tus 1:1 preparados y las alertas de tus herramientas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="more">
+  <div class="wrap">
+    <div class="panel privacy halftone">
+      <div>
+        <span class="caption">Privacidad</span>
+        <h2>Tus datos se quedan contigo.</h2>
+        <p style="color:var(--ink-2);margin:0;font-size:17px">Guildmaster no tiene un servidor donde guarde tu trabajo. Todo vive en tu computador.</p>
+      </div>
+      <div class="points">
+        <div class="point"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><h4>Cifrado en tu computador</h4><p>Tu información se guarda cifrada con AES-256 y solo se abre con tu cuenta.</p></div></div>
+        <div class="point"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><div><h4>Lee, no escribe</h4><p>En tus herramientas solo lee. Lo que se crea o se envía pasa por un botón que tú apruebas.</p></div></div>
+        <div class="point"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></div><div><h4>Tu IA, sin intermediarios</h4><p>Los análisis corren desde tu computador. Guildmaster no ve ni guarda tus conversaciones con la IA.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="more" style="padding-top:24px;border-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="caption light">Se conecta con</span>
+      <h2>Con las herramientas que ya usas.</h2>
+    </div>
+    <div class="tools"><span>Notion</span><span>ClickUp</span><span>Slack</span><span>Microsoft Teams</span><span>Google Chat</span><span>Gmail</span><span>Google Calendar</span><span>Google Drive</span><span>GitHub</span><span>dbt Cloud</span><span>BigQuery</span><span>Amplitude</span><span>RudderStack</span><span>Workable</span></div>
+  </div>
+</section>
+
+<section class="more">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="caption light">Empieza en minutos</span>
+      <h2>Tres pasos y listo.</h2>
+    </div>
+    <div class="steps">
+      <div class="panel step"><h3>Descarga Guildmaster</h3><p>Ábrelo e instálalo.<span id="win-note"> Si Windows muestra «Windows protegió su PC», elige <em>Más información → Ejecutar de todas formas</em>.</span><span id="mac-note"> En Mac, arrástralo a Aplicaciones; si macOS no lo deja abrir, ve a <em>Ajustes del Sistema → Privacidad y seguridad → Abrir igualmente</em>.</span></p></div>
+      <div class="panel step"><h3>Activa la IA</h3><p>La app te guía paso a paso para activar su IA en minutos, con todo listo para copiar y pegar.</p></div>
+      <div class="panel step"><h3>Conecta y toma el control</h3><p>Elige cómo trabajas, conecta tus herramientas o usa la lista propia de Guildmaster, y mira tu trabajo tomar forma.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <div class="panel halftone">
+      <svg width="58" height="58"><use href="#mark"/></svg>
+      <h2>Toma el control de tu trabajo.</h2>
+      <p>Descárgala, conéctala en minutos y empieza la semana sabiendo exactamente qué hacer y por qué.</p>
+      <div class="cta-row"><a id="final" class="btn primary" href="https://github.com/guildmaster-app/releases/releases/latest"><svg><use href="#dl"/></svg><span id="final-label">Descargar Guildmaster</span></a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Guildmaster · El centro de mando para equipos de trabajo.</span>
+    <a href="https://github.com/guildmaster-app/releases/releases">Todas las versiones</a>
+  </div>
+</footer>
+
+<script>
+  // The installer for this computer: Windows, or a Mac (Apple chip unless the graphics say Intel). Both download
+  // buttons follow it, and point to the latest release.
+  (function () {
+    var base = 'https://github.com/guildmaster-app/releases/releases/latest/download/';
+    var ua = navigator.userAgent;
+    var buttons = [document.getElementById('main'), document.getElementById('final')];
+    var labels = [document.getElementById('main-label'), document.getElementById('final-label')];
+    var meta = document.getElementById('meta');
+    var os = /Windows/.test(ua) ? 'win' : /Macintosh|Mac OS X/.test(ua) ? 'mac' : null;
+    var file = null, label = 'Descargar Guildmaster';
+    if (os === 'win') {
+      file = 'Guildmaster-Windows.exe'; label = 'Descargar para Windows';
+      document.getElementById('mac-note').hidden = true;
+    } else if (os === 'mac') {
+      var intel = false;
+      try {
+        var gl = document.createElement('canvas').getContext('webgl');
+        var dbg = gl && gl.getExtension('WEBGL_debug_renderer_info');
+        intel = /Intel/i.test(dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : '');
+      } catch (e) {}
+      file = intel ? 'Guildmaster-Mac-x64.dmg' : 'Guildmaster-Mac-arm64.dmg';
+      label = intel ? 'Descargar para Mac (Intel)' : 'Descargar para Mac';
+      document.getElementById('win-note').hidden = true;
+    } else {
+      meta.textContent = 'Para Windows y Mac: ábrela desde tu computador.';
+    }
+    buttons.forEach(function (b, i) { if (file) b.href = base + file; labels[i].textContent = label; });
+    // Without a published version yet, the links would land on a 404: say so instead.
+    fetch('https://api.github.com/repos/guildmaster-app/releases/releases/latest')
+      .then(function (r) {
+        if (r.status === 404) {
+          buttons.forEach(function (b, i) { b.removeAttribute('href'); b.classList.add('off'); labels[i].textContent = 'Muy pronto'; });
+          meta.textContent = 'La primera versión está por publicarse.';
+          document.getElementById('others').hidden = true;
+          return null;
+        }
+        return r.ok ? r.json() : null;
+      })
+      .then(function (j) {
+        if (!j || !j.tag_name) return;
+        var when = j.published_at ? new Date(j.published_at).toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+        meta.textContent = 'Versión ' + j.tag_name.replace(/^v/, '') + (when ? ' · ' + when : '') + ' · Windows y Mac';
+      })
+      .catch(function () {});
+  })();
+</script>
+</body>
+</html>
