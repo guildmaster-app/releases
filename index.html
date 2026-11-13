@@ -53,6 +53,11 @@
   .btn.primary:hover { box-shadow: 7px 7px 0 var(--sh); }
   .btn.off { opacity: .55; pointer-events: none; }
   .btn svg { width: 18px; height: 18px; }
+  /* Windows and Mac, side by side and equal: whoever visits sees theirs first. */
+  .dl-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 540px; }
+  .dl-pair .btn.primary { justify-content: center; padding: 14px 16px; white-space: nowrap; }
+  [data-pair="final"] { margin: 0 auto; width: 100%; }
+  @media (max-width: 560px) { .dl-pair { grid-template-columns: 1fr; } }
   .btn.mini { padding: 5px 10px; font-size: 12.5px; box-shadow: 2px 2px 0 var(--sh); }
 
   .hero { padding: 56px 0 40px; }
@@ -209,15 +214,9 @@
       <span class="caption">El centro de mando de tu trabajo</span>
       <h1>Toma el control de <span class="mark-hl">tu trabajo.</span></h1>
       <p class="lead">Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad.</p>
-      <div class="cta-row" id="descargar">
-        <a id="main" class="btn primary" href="https://github.com/guildmaster-app/releases/releases/latest"><svg><use href="#dl"/></svg><span id="main-label">Descargar Guildmaster</span></a>
-        <span id="meta" class="meta">Para Windows y Mac</span>
-      </div>
-      <div class="others" id="others">
-        También para
-        <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Windows.exe">Windows</a>,
-        <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-arm64.dmg">Mac con chip de Apple</a> y
-        <a href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-x64.dmg">Mac con Intel</a>
+      <div id="descargar">
+        <div class="dl-pair" data-pair="top"><a class="btn primary dl-win" href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Windows.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg><span>Descargar para Windows</span></a><a class="btn primary dl-mac" href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-arm64.dmg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.1 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.6 2.8-1.3z"/></svg><span>Descargar para Mac</span></a></div>
+        <div class="others" id="others"><span id="meta">Para Windows 10 y 11, y macOS 13 o más reciente.</span> ¿Mac con Intel? <a class="dl-intel" href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-x64.dmg">Descárgala aquí</a>.</div>
       </div>
       <div class="proof"><span>14 integraciones</span><span>IA que conoce a tu equipo</span><span>Cifrado AES-256</span><span>Se actualiza sola</span></div>
     </div>
@@ -499,7 +498,7 @@
       <svg width="58" height="58"><use href="#mark"/></svg>
       <h2>Toma el control de tu trabajo.</h2>
       <p>Descárgala, conéctala en minutos y empieza la semana sabiendo exactamente qué hacer y por qué.</p>
-      <div class="cta-row"><a id="final" class="btn primary" href="https://github.com/guildmaster-app/releases/releases/latest"><svg><use href="#dl"/></svg><span id="final-label">Descargar Guildmaster</span></a></div>
+      <div class="cta-row" style="justify-content:center"><div class="dl-pair" data-pair="final"><a class="btn primary dl-win" href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Windows.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg><span>Descargar para Windows</span></a><a class="btn primary dl-mac" href="https://github.com/guildmaster-app/releases/releases/latest/download/Guildmaster-Mac-arm64.dmg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.1 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.6 2.8-1.3z"/></svg><span>Descargar para Mac</span></a></div></div>
     </div>
   </div>
 </section>
@@ -512,40 +511,34 @@
 </footer>
 
 <script>
-  // The installer for this computer: Windows, or a Mac (Apple chip unless the graphics say Intel). Both download
-  // buttons follow it, and point to the latest release.
+  // Two equal buttons, Windows and Mac; the visitor's system goes first. A Mac with Intel graphics gets the Intel
+  // installer from the Mac button too. Without a published version yet, they say so instead of landing on a 404.
   (function () {
     var base = 'https://github.com/guildmaster-app/releases/releases/latest/download/';
     var ua = navigator.userAgent;
-    var buttons = [document.getElementById('main'), document.getElementById('final')];
-    var labels = [document.getElementById('main-label'), document.getElementById('final-label')];
-    var meta = document.getElementById('meta');
-    var os = /Windows/.test(ua) ? 'win' : /Macintosh|Mac OS X/.test(ua) ? 'mac' : null;
-    var file = null, label = 'Descargar Guildmaster';
-    if (os === 'win') {
-      file = 'Guildmaster-Windows.exe'; label = 'Descargar para Windows';
-      document.getElementById('mac-note').hidden = true;
-    } else if (os === 'mac') {
-      var intel = false;
+    var mac = /Macintosh|Mac OS X/.test(ua);
+    var intel = false;
+    if (mac) {
       try {
         var gl = document.createElement('canvas').getContext('webgl');
         var dbg = gl && gl.getExtension('WEBGL_debug_renderer_info');
         intel = /Intel/i.test(dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : '');
       } catch (e) {}
-      file = intel ? 'Guildmaster-Mac-x64.dmg' : 'Guildmaster-Mac-arm64.dmg';
-      label = intel ? 'Descargar para Mac (Intel)' : 'Descargar para Mac';
-      document.getElementById('win-note').hidden = true;
-    } else {
-      meta.textContent = 'Para Windows y Mac: ábrela desde tu computador.';
     }
-    buttons.forEach(function (b, i) { if (file) b.href = base + file; labels[i].textContent = label; });
-    // Without a published version yet, the links would land on a 404: say so instead.
+    var pairs = document.querySelectorAll('.dl-pair');
+    pairs.forEach(function (p) {
+      var w = p.querySelector('.dl-win'), m = p.querySelector('.dl-mac');
+      if (intel) m.href = base + 'Guildmaster-Mac-x64.dmg';
+      if (mac) p.insertBefore(m, w);
+    });
+    if (mac) document.getElementById('win-note').hidden = true;
+    else if (/Windows/.test(ua)) document.getElementById('mac-note').hidden = true;
+    var meta = document.getElementById('meta');
     fetch('https://api.github.com/repos/guildmaster-app/releases/releases/latest')
       .then(function (r) {
         if (r.status === 404) {
-          buttons.forEach(function (b, i) { b.removeAttribute('href'); b.classList.add('off'); labels[i].textContent = 'Muy pronto'; });
+          document.querySelectorAll('.dl-pair .btn').forEach(function (b) { b.removeAttribute('href'); b.classList.add('off'); b.querySelector('span').textContent = 'Muy pronto'; });
           meta.textContent = 'La primera versión está por publicarse.';
-          document.getElementById('others').hidden = true;
           return null;
         }
         return r.ok ? r.json() : null;
@@ -553,7 +546,7 @@
       .then(function (j) {
         if (!j || !j.tag_name) return;
         var when = j.published_at ? new Date(j.published_at).toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-        meta.textContent = 'Versión ' + j.tag_name.replace(/^v/, '') + (when ? ' · ' + when : '') + ' · Windows y Mac';
+        meta.textContent = 'Versión ' + j.tag_name.replace(/^v/, '') + (when ? ' · ' + when : '') + '.';
       })
       .catch(function () {});
   })();
