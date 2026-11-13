@@ -7,18 +7,20 @@
 <meta name="description" content="Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad. Para Windows y Mac.">
 <meta property="og:title" content="Guildmaster · Toma el control de tu trabajo">
 <meta property="og:description" content="Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad.">
-<meta name="theme-color" content="#f6f3ec">
+<meta name="theme-color" content="#f3f5f7">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <style>
   :root {
     color-scheme: light;
-    --paper: #f6f3ec; --white: #ffffff; --ink: #14161a; --ink-2: #42464e; --ink-3: #737882;
-    --line: #14161a;
-    --accent: #10a374; --accent-2: #0b7f5a; --mint: #d6f3e7; --sky: #dbe8ff; --blue: #2f6bff; --sun: #fff1c7; --rose: #ffe0dc; --red: #c2382a; --violet: #ece6ff;
+    --paper: #f3f5f7; --white: #ffffff; --ink: #111418; --ink-2: #4a5260; --ink-3: #7a828f;
+    --line: #111418;
+    /* One accent (Guildmaster's green) in a few strengths; grays for the rest; red only for alerts. */
+    --accent: #10a374; --accent-2: #0b7f5a; --accent-mid: #7fd8b4; --mint: #e3f5ec; --gray: #eceff3;
+    --sky: var(--gray); --sun: var(--gray); --violet: var(--gray); --blue: var(--accent-2); --rose: #fdecea; --red: #d93a2b;
     --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", "Helvetica Neue", sans-serif;
     --mono: ui-monospace, "SF Mono", Menlo, "Cascadia Mono", Consolas, monospace;
     --shadow: 5px 5px 0 var(--line);
-    --dots: radial-gradient(rgba(20,22,26,0.11) 1px, transparent 1.4px);
+    --dots: radial-gradient(rgba(17,20,24,0.09) 1px, transparent 1.4px);
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -36,7 +38,7 @@
   .bubble::after { content: ""; position: absolute; left: 26px; bottom: -14px; width: 18px; height: 14px; background: var(--white); border-right: 2.5px solid var(--line); border-bottom: 2.5px solid var(--line); transform: skewX(-35deg); border-bottom-right-radius: 4px; }
   .mark-hl { background: linear-gradient(transparent 58%, var(--mint) 58%); padding: 0 2px; }
 
-  nav { position: sticky; top: 0; z-index: 10; background: rgba(246,243,236,0.92); backdrop-filter: blur(10px); border-bottom: 2.5px solid var(--line); }
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(243,245,247,0.92); backdrop-filter: blur(10px); border-bottom: 2.5px solid var(--line); }
   nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 12px; }
   .brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 750; letter-spacing: -0.01em; font-size: 18px; text-decoration: none; }
   .brand b { color: var(--accent-2); }
@@ -95,7 +97,7 @@
   .frame .n { position: absolute; top: -14px; left: 14px; }
   .frame h3 { margin: 0; font-size: 17px; letter-spacing: -0.01em; }
   .frame p { margin: 0; font-size: 14px; color: var(--ink-2); }
-  .frame .art { min-height: 128px; display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 12px; border: 2px solid var(--line); border-radius: 6px; background-color: #fbfaf6; }
+  .frame .art { min-height: 128px; display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 12px; border: 2px solid var(--line); border-radius: 6px; background-color: #f8f9fb; }
 
   .feat { padding: 64px 0; border-top: 2.5px solid var(--line); }
   .feat-grid { display: grid; gap: 40px; align-items: center; }
@@ -162,7 +164,7 @@
   .steps > * { min-width: 0; }
   @media (min-width: 860px) { .steps { grid-template-columns: repeat(3, 1fr); } }
   .step { padding: 24px 22px 22px; }
-  .step::before { counter-increment: s; content: counter(s); position: absolute; top: -17px; left: 18px; width: 32px; height: 32px; border: 2.5px solid var(--line); border-radius: 50%; background: var(--sun); display: grid; place-items: center; font: 800 14px var(--sans); }
+  .step::before { counter-increment: s; content: counter(s); position: absolute; top: -17px; left: 18px; width: 32px; height: 32px; border: 2.5px solid var(--line); border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font: 800 14px var(--sans); }
   .step h3 { font-size: 17px; margin: 6px 0 8px; }
   .step p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
   .final { padding: 80px 0; border-top: 2.5px solid var(--line); }
@@ -222,7 +224,7 @@
     <div class="hero-comic" aria-hidden="true">
       <div class="panel big halftone">
         <div class="ph">Hoy · lo que te cabe</div>
-        <div class="meter" style="margin-bottom:12px"><i style="width:46%;background:var(--accent)"></i><i style="width:22%;background:var(--blue)"></i><i style="width:14%;background:#a78bfa"></i></div>
+        <div class="meter" style="margin-bottom:12px"><i style="width:46%;background:var(--accent)"></i><i style="width:22%;background:var(--accent-mid)"></i><i style="width:14%;background:var(--mint)"></i></div>
         <div class="row"><span class="box on"></span><span class="t">Cerrar el tablero de retención</span><span class="chip c-obj">Objetivo Q4</span></div>
         <div class="row"><span class="box"></span><span class="t">Revisar la propuesta de precios</span><span class="chip c-due">Vence hoy</span></div>
         <div class="row" style="margin-bottom:0"><span class="box"></span><span class="t">Ventas de octubre para Finanzas</span><span class="chip c-req">Pedido</span></div>
@@ -270,7 +272,7 @@
         <span class="caption n">3 · Se planea</span>
         <div class="art halftone">
           <div style="font:600 11.5px var(--mono);display:flex;justify-content:space-between"><span>Semana</span><span>26 / 30 h</span></div>
-          <div class="meter"><i style="width:58%;background:var(--accent)"></i><i style="width:28%;background:var(--sun)"></i></div>
+          <div class="meter"><i style="width:58%;background:var(--accent)"></i><i style="width:28%;background:var(--accent-mid)"></i></div>
           <div style="font-size:12.5px;color:var(--ink-2)">Entra el jueves, después de tus reuniones.</div>
         </div>
         <h3>Entra en tu semana</h3>
@@ -317,7 +319,7 @@
           <div>L<div class="col"><i style="height:80%"></i></div></div>
           <div>M<div class="col"><i style="height:95%"></i></div></div>
           <div>M<div class="col"><i style="height:60%"></i></div></div>
-          <div>J<div class="col"><i style="height:70%;background:var(--sun)"></i></div></div>
+          <div>J<div class="col"><i style="height:70%;background:var(--accent-mid)"></i></div></div>
           <div>V<div class="col"><i style="height:45%"></i></div></div>
         </div>
       </div>
@@ -344,9 +346,9 @@
         <div class="children">
           <div class="node"><div class="lbl">Objetivo</div><div class="ttl">Finanzas cierra el mes sin conciliar a mano</div><div class="pr"><div class="meter"><i style="width:72%;background:var(--accent)"></i></div>72%</div></div>
           <div class="node"><div class="lbl">Objetivo</div><div class="ttl">El tablero de dirección nunca falla</div><div class="pr"><div class="meter"><i style="width:54%;background:var(--accent)"></i></div>54%</div></div>
-          <div class="node"><div class="lbl">Objetivo</div><div class="ttl">Un agente que responde preguntas sobre los datos</div><div class="pr"><div class="meter"><i style="width:31%;background:var(--sun)"></i></div>31%</div></div>
+          <div class="node"><div class="lbl">Objetivo</div><div class="ttl">Un agente que responde preguntas sobre los datos</div><div class="pr"><div class="meter"><i style="width:31%;background:var(--accent-mid)"></i></div>31%</div></div>
         </div>
-        <div class="node" style="background:var(--sun)"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 10px;font:700 12.5px var(--mono)"><span>Esta semana</span><span>64% empuja objetivos · 36% día a día</span></div></div>
+        <div class="node" style="background:var(--mint)"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 10px;font:700 12.5px var(--mono)"><span>Esta semana</span><span>64% empuja objetivos · 36% día a día</span></div></div>
       </div>
     </div>
   </div>
@@ -436,7 +438,7 @@
         </ul>
       </div>
       <div class="panel role">
-        <span class="caption" style="background:var(--blue)">Lidero un equipo</span>
+        <span class="caption" style="background:var(--ink)">Lidero un equipo</span>
         <h3>La foto real del equipo, todos los días.</h3>
         <ul class="ticks">
           <li>La carga de cada persona y lo que está en riesgo</li>
