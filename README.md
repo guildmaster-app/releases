@@ -1,6 +1,6 @@
-# Guildmaster
+# Kymo
 
-Instaladores de Guildmaster, una app de escritorio que organiza tu trabajo.
+Instaladores de Kymo, una app de escritorio que organiza tu trabajo.
 
 **Descarga:** https://guildmaster-app.github.io/releases/
 
