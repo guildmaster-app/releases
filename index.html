@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kymo · Toma el control de tu trabajo</title>
-<meta name="description" content="Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad. Para Windows y Mac.">
+<meta name="description" content="Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad. Para ti y para tu equipo. Para Windows y Mac.">
 <meta property="og:title" content="Kymo · Toma el control de tu trabajo">
 <meta property="og:description" content="Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad.">
 <meta name="theme-color" content="#e7eaee">
@@ -217,6 +217,37 @@
   .part .pn span { font: 600 11.5px var(--mono); color: var(--ink-3); margin-left: 6px; }
   #sistema .d { display: inline-block; vertical-align: middle; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--line); margin-right: 4px; }
   .d-ok { background: var(--accent); } .d-warn { background: #f2b33d; } .d-bad { background: var(--red); } .d-off { background: #c3c8cf; }
+  /* Plans: which plan each part belongs to (Free in white, Pro in the accent, Team in ink), and the three side by side. */
+  .ptag { display: inline-block; font: 700 10.5px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 7px; border: 1.5px solid var(--line); border-radius: 5px; background: var(--white); color: var(--ink); white-space: nowrap; }
+  .ptag.pro { background: var(--accent); color: var(--on-accent); }
+  .ptag.team { background: var(--root-bg); color: var(--root-ink); }
+  .plan-note { margin: 24px 0 0; padding-top: 16px; border-top: 2px dashed var(--line); display: grid; gap: 9px; font-size: 14px; color: var(--ink-2); }
+  .plan-note > div { display: flex; gap: 10px; align-items: baseline; }
+  .plan-note .ptag { flex: none; min-width: 56px; text-align: center; }
+  .plans { display: grid; gap: 22px; align-items: stretch; }
+  .plans > * { min-width: 0; }
+  @media (min-width: 1000px) { .plans { grid-template-columns: repeat(3, 1fr); } }
+  .plan { padding: 28px 22px 22px; display: flex; flex-direction: column; gap: 16px; }
+  .plan.pro { background-color: var(--mint); }
+  .plan .n { position: absolute; top: -14px; left: 18px; }
+  .plan h3 { margin: 4px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; }
+  .plan .line { margin: 0; color: var(--ink-2); font-size: 15px; }
+  .price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; padding: 12px 0; border-top: 2px dashed var(--line); border-bottom: 2px dashed var(--line); }
+  .price b { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .price span { font-size: 13.5px; color: var(--ink-3); }
+  .price .chip { align-self: center; margin-left: auto; background: var(--white); color: var(--ink); }
+  .plan .adds { font: 700 10.5px/1.3 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .plan .ticks li { font-size: 14.5px; }
+  .plan .foot { margin-top: auto; padding-top: 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .plans-later { margin: 26px 0 0; color: var(--ink-3); font-size: 14.5px; max-width: 760px; }
+  /* The phone: a phone-shaped frame with the app's Hoy, made-up like the other scenes. */
+  .phone { width: 100%; max-width: 310px; margin: 0 auto; padding: 12px; border-radius: 36px; background: var(--root-bg); border: 2.5px solid var(--line); box-shadow: var(--shadow); }
+  .phone .screen { border-radius: 26px; padding: 18px 12px 12px; background-color: var(--paper); background-image: var(--dots); background-size: 7px 7px; display: grid; gap: 10px; }
+  .phone .node { padding: 9px 10px; }
+  .phone .ttl { font-size: 13.5px; }
+  .phone .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 2px; padding-top: 9px; border-top: 2px solid var(--line); font: 700 9.5px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; color: var(--ink-3); }
+  .phone .tabs b { color: var(--ink); }
+  .soon { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 24px; font-weight: 700; font-size: 15px; }
   [hidden] { display: none !important; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
 </style>
@@ -238,7 +269,7 @@
 <nav>
   <div class="wrap">
     <a class="brand" href="#"><svg width="30" height="30"><use href="#mark"/></svg><span>ky<b>mo</b></span></a>
-    <div class="nav-links"><a href="#planear">Planear</a><a href="#objetivos">Objetivos</a><a href="#seguimiento">Seguimiento</a><a href="#alertas">Alertas</a><a href="#productos">Productos internos</a><a href="#seguridad">Seguridad</a></div>
+    <div class="nav-links"><a href="#planear">Planear</a><a href="#objetivos">Objetivos</a><a href="#seguimiento">Seguimiento</a><a href="#alertas">Alertas</a><a href="#celular">Celular</a><a href="#planes">Planes</a><a href="#seguridad">Seguridad</a></div>
     <a class="btn" href="#descargar">Descargar</a>
   </div>
 </nav>
@@ -248,12 +279,12 @@
     <div>
       <span class="caption">El centro de mando de tu trabajo</span>
       <h1>Toma el control de <span class="mark-hl">tu trabajo.</span></h1>
-      <p class="lead">Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad.</p>
+      <p class="lead">Tus tareas, lo que te piden y tus objetivos en un solo lugar, con claridad sobre qué hacer hoy y qué importa de verdad. Para ti, y para tu equipo cuando lo lleves a Kymo.</p>
       <div id="descargar">
-        <div class="dl-pair" data-pair="top"><a class="btn primary dl-win" href="https://github.com/guildmaster-app/releases/releases/latest/download/Kymo-Windows.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg><span>Descargar para Windows</span></a><a class="btn primary dl-mac" href="https://github.com/guildmaster-app/releases/releases/latest/download/Kymo-Mac-arm64.dmg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.1 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.6 2.8-1.3z"/></svg><span>Descargar para Mac</span></a></div>
-        <div class="others" id="others"><span id="meta">Para Windows 10 y 11, y macOS 13 o más reciente.</span> ¿Mac con Intel? <a class="dl-intel" href="https://github.com/guildmaster-app/releases/releases/latest/download/Kymo-Mac-x64.dmg">Descárgala aquí</a>.</div>
+        <div class="dl-pair" data-pair="top"><a class="btn primary dl-win" href="https://github.com/kymo-app/releases/releases/latest/download/Kymo-Windows.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg><span>Descargar para Windows</span></a><a class="btn primary dl-mac" href="https://github.com/kymo-app/releases/releases/latest/download/Kymo-Mac-arm64.dmg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.1 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.6 2.8-1.3z"/></svg><span>Descargar para Mac</span></a></div>
+        <div class="others" id="others"><span id="meta">Para Windows 10 y 11, y macOS 13 o más reciente.</span> ¿Mac con Intel? <a class="dl-intel" href="https://github.com/kymo-app/releases/releases/latest/download/Kymo-Mac-x64.dmg">Descárgala aquí</a>.</div>
       </div>
-      <div class="proof"><span>36 integraciones</span><span>IA que conoce a tu equipo</span><span>Cifrado AES-256</span><span>Tú decides qué ve la IA</span></div>
+      <div class="proof"><span>Empieza gratis</span><span>36 integraciones</span><span>Cifrado AES-256</span><span>Tú decides qué ve la IA</span></div>
     </div>
 
     <div class="hero-comic" aria-hidden="true">
@@ -338,6 +369,11 @@
         <li><b>Proyectos partidos en hitos y tareas</b>, con un cronograma que respeta la carga de cada persona.</li>
         <li><b>Lo que pediste y sigue sin respuesta</b>, para no tener que acordarte de todo.</li>
       </ul>
+      <div class="plan-note">
+        <div><span class="ptag">Free</span><span>Tu semana, tus tareas y hasta 3 proyectos, en tu computador.</span></div>
+        <div><span class="ptag pro">Pro</span><span>Los pedidos que detecta la IA y lo que pediste y sigue sin respuesta.</span></div>
+        <div><span class="ptag team">Team</span><span>Los pedidos del equipo, compartidos.</span></div>
+      </div>
     </div>
     <div class="panel scene halftone">
       <div class="bubble"><b>Ana · #finanzas</b><br>¿Puedes revisar el cierre de cartera antes del viernes?</div>
@@ -374,6 +410,11 @@
         <li><b>Cada tarea dice a qué objetivo aporta</b>, clasificada por la IA y corregida por ti.</li>
         <li><b>Revisión con evidencia</b>: el avance sale de lo que se hizo, no de un reporte.</li>
       </ul>
+      <div class="plan-note">
+        <div><span class="ptag">Free</span><span>Tus objetivos y proyectos, escritos por ti, con su avance.</span></div>
+        <div><span class="ptag pro">Pro</span><span>Armados con IA, y cada tarea ligada sola a su objetivo.</span></div>
+        <div><span class="ptag team">Team</span><span>Los objetivos y proyectos de todo el equipo.</span></div>
+      </div>
     </div>
     <div class="panel scene halftone">
       <div class="tree">
@@ -402,6 +443,10 @@
         <li><b>El contexto del equipo</b>: una memoria que aprende cómo trabajan y qué vocabulario usan.</li>
         <li><b>Progreso que motiva</b>: temporadas que se juegan de nuevo, misiones, recompensas que rotan y personajes por desbloquear, sin rankings ni comparaciones.</li>
       </ul>
+      <div class="plan-note">
+        <div><span class="ptag">Free</span><span>Tu progreso: temporadas, misiones y personajes.</span></div>
+        <div><span class="ptag team">Team</span><span>La carga de cada persona, los 1:1, cuándo hace falta alguien más y el contexto del equipo. El seguimiento lo ve solo quien lidera.</span></div>
+      </div>
     </div>
     <div class="panel scene halftone">
       <div class="ph">Tu equipo esta semana</div>
@@ -426,6 +471,11 @@
         <li><b>Sin ruido</b>: los errores que de verdad son nuevos o volvieron, solo los modelos que están en producción, nada de tablas temporales. Lo que ya se arregló queda «en observación», a la vista.</li>
         <li><b>Análisis con IA para lo grave</b>, un <b>plan de fallos</b> que ataca el resto por causa, y <b>Radar</b> para lo que nadie está viendo.</li>
       </ul>
+      <div class="plan-note">
+        <div><span class="ptag">Free</span><span>Los fallos de tus herramientas, revisados en tu computador.</span></div>
+        <div><span class="ptag pro">Pro</span><span>El análisis con IA de lo grave.</span></div>
+        <div><span class="ptag team">Team</span><span>Los fallos de todo el equipo, compartidos, y los de sus productos internos.</span></div>
+      </div>
     </div>
     <div class="panel scene halftone">
       <div class="alert-head"><span class="pulse"></span><span class="t">El deploy a producción falla en main</span><span class="chip c-alta">Alta</span></div>
@@ -453,6 +503,9 @@
         <li><b>Abre cualquier pieza</b> y mira lo que Kymo entiende de ella: sus jobs y horarios, sus tablas, sus modelos en producción, y lo que todavía no sabe.</li>
         <li><b>Hecho por papeles, no por marcas</b>: BigQuery o Databricks, dbt o Airflow, Vertex AI o MLflow; el mismo mapa y las mismas reglas.</li>
       </ul>
+      <div class="plan-note">
+        <div><span class="ptag team">Team</span><span>El mapa del sistema es del equipo: llega con Team.</span></div>
+      </div>
     </div>
     <div class="panel scene halftone">
       <div class="ph">El sistema · 1 pieza con fallos graves</div>
@@ -480,6 +533,9 @@
         <li><b>Si responde, sus errores y sus despliegues</b>, cada hora, en Alertas, con la parte y la fuente de cada fallo.</li>
         <li><b>Cada producto con su dueño</b>: sus fallos le llegan a quien lo lleva, y Hoy te avisa si alguno no tiene.</li>
       </ul>
+      <div class="plan-note">
+        <div><span class="ptag team">Team</span><span>Los productos internos son del equipo: llegan con Team.</span></div>
+      </div>
     </div>
     <div class="panel scene halftone">
       <div class="node">
@@ -496,6 +552,44 @@
           <div class="pn">Backend<span>org/ventas-api · api.ventas.tuempresa.com</span></div>
           <div class="prod-line"><span class="k">Corre en</span><span class="d d-warn"></span><span class="v"><b>Google Cloud</b> · 9 errores en la última hora</span><span></span></div>
           <div class="prod-line"><span class="k">Monitoreo</span><span class="d d-warn"></span><span class="v"><b>Datadog</b> · 1 monitor en alerta</span><span class="chip c-due">Media</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="feat" id="celular">
+  <div class="wrap feat-grid">
+    <div class="feat-copy">
+      <span class="caption">Celular</span>
+      <h2>Lo miras en segundos y lo resuelves con un toque.</h2>
+      <p>El celular es a Kymo lo que el reloj al teléfono: te avisa a tiempo, lo miras de un vistazo y actúas con uno o dos toques. Lo que pide más calma, como planear o configurar, se sigue en el computador.</p>
+      <ul class="ticks">
+        <li><b>Hoy, de un vistazo</b>: la carga de tu semana y lo que no puede esperar.</li>
+        <li><b>Respondes ahí mismo</b>: aceptas o descartas un pedido, y una alerta la marcas como vista o la dejas para revisar en el computador.</li>
+        <li><b>Tu semana en la mano</b>: marcas lo que terminaste y mueves una tarea a otra semana viendo cuánto le cabe a cada una.</li>
+        <li><b>Cierras la semana</b> con un toque por cada cosa que ya quedó lista.</li>
+        <li><b>Tus 1:1, camino a la reunión</b>: quién necesita atención y la preparación de cada conversación, cifrada para que solo la abras tú.</li>
+      </ul>
+      <div class="soon"><span class="ptag pro">Pro</span><span class="ptag team">Team</span><span>Muy pronto en iPhone y Android</span></div>
+      <div class="plan-note">
+        <div><span class="ptag team">Team</span><span>Los 1:1 y el equipo, para quien lo lidera, y el mapa del sistema en Alertas.</span></div>
+      </div>
+    </div>
+    <div class="panel scene halftone">
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="ph" style="margin-bottom:0">Hoy · tu semana</div>
+          <div style="display:flex;justify-content:space-between;font:600 11.5px var(--mono)"><span>Llevas</span><span>26 / 30 h</span></div>
+          <div class="meter"><i style="width:62%;background:var(--accent)"></i><i style="width:24%;background:var(--accent-mid)"></i></div>
+          <div class="node">
+            <div class="lbl">Pedido nuevo · Slack</div>
+            <div class="ttl">Ventas de octubre para Finanzas</div>
+            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><span class="btn mini" style="background:var(--accent);color:var(--on-accent)">Aceptar</span><span class="btn mini">Descartar</span></div>
+          </div>
+          <div class="alert-head" style="padding:9px 10px"><span class="pulse"></span><span class="t" style="font-size:13px">El deploy a producción falla</span><span class="chip c-alta">Alta</span></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="btn mini">Ya lo vi</span><span class="btn mini">Revisar en el computador</span></div>
+          <div class="row" style="margin:0"><span class="box on"></span><span class="t">Cerrar el tablero de retención</span><span class="chip c-obj">Hecho</span></div>
+          <div class="tabs"><b>Hoy</b><span>Semana</span><span>Pedidos</span><span>Alertas</span></div>
         </div>
       </div>
     </div>
@@ -527,7 +621,7 @@
     </div>
     <div class="roles">
       <div class="panel role">
-        <span class="caption">Organizo mi trabajo</span>
+        <span class="caption">Organizo mi trabajo · Free y Pro</span>
         <h3>Saca adelante lo tuyo, y crece.</h3>
         <ul class="ticks">
           <li>Tu semana priorizada contra tu ritmo y tus reuniones</li>
@@ -537,7 +631,7 @@
         </ul>
       </div>
       <div class="panel role">
-        <span class="caption" style="background:var(--ink)">Lidero un equipo</span>
+        <span class="caption" style="background:var(--ink)">Lidero un equipo · Team</span>
         <h3>La foto real del equipo, todos los días.</h3>
         <ul class="ticks">
           <li>La carga de cada persona y lo que está en riesgo</li>
@@ -549,6 +643,62 @@
     </div>
   </div>
 </section>
+<section class="more" id="planes">
+  <div class="wrap">
+    <div class="section-head" style="max-width:760px">
+      <span class="caption light">Planes</span>
+      <h2>Todo tu trabajo, bajo control.</h2>
+      <p>Kymo le hace seguimiento a lo que tienes entre manos, a lo que te piden y a lo que mueve tu equipo, y te avisa a tiempo. Nada se queda por fuera. Empieza gratis y sube de plan cuando lo necesites.</p>
+    </div>
+    <div class="plans">
+      <div class="panel plan">
+        <span class="caption light n">Free</span>
+        <h3>Pon orden en tu trabajo</h3>
+        <p class="line">Todo lo tuyo en un solo lugar, en tu computador.</p>
+        <div class="price"><b>Gratis</b><span>para siempre</span></div>
+        <ul class="ticks">
+          <li>Todas tus tareas en un solo lugar, ordenadas por semana</li>
+          <li>Cuánto te cabe en la semana y qué mover a tiempo</li>
+          <li>Tus metas, con un plan paso a paso (hasta 3 a la vez)</li>
+          <li>Los fallos de tus herramientas, a la vista</li>
+        </ul>
+        <div class="foot"><a class="btn" href="#descargar">Descargar gratis</a><span class="meta">Todo se queda en tu computador.</span></div>
+      </div>
+      <div class="panel plan pro halftone">
+        <span class="caption n">Pro</span>
+        <h3>Todo bajo control, en todas partes</h3>
+        <p class="line">En tu computador y en tu celular, aunque no estés conectado.</p>
+        <div class="price"><b>Precio por definir</b><span>al mes</span><span class="chip">14 días gratis</span></div>
+        <div class="adds">Todo lo de Free, más:</div>
+        <ul class="ticks">
+          <li>La IA arma contigo tus objetivos y proyectos</li>
+          <li>Convierte lo que te piden en tareas, con fecha y prioridad</li>
+          <li>Anota tus logros por ti, listos para tu próxima evaluación</li>
+          <li>Metas y proyectos sin límite</li>
+          <li>La app del celular: revisas y respondes en segundos</li>
+        </ul>
+        <div class="foot"><span class="ptag pro">Muy pronto</span></div>
+      </div>
+      <div class="panel plan">
+        <span class="caption n" style="background:var(--root-bg);color:var(--root-ink)">Team</span>
+        <h3>Un equipo alineado y todo el trabajo cubierto</h3>
+        <p class="line">Todos ven lo mismo y nada se queda sin dueño.</p>
+        <div class="price"><b>Precio por definir</b><span>por persona al mes</span><span class="chip">14 días gratis</span></div>
+        <div class="adds">Tu equipo cuenta con plan Pro, más:</div>
+        <ul class="ticks">
+          <li>Ves quién está al tope y quién está bloqueado, sin preguntar</li>
+          <li>Cada 1:1 llega preparado: qué ha hecho la persona, qué le preocupa y de qué hablar</li>
+          <li>Los objetivos del equipo, conectados con el trabajo de cada uno</li>
+          <li>Todos ven los mismos pedidos y alertas: nada se cae entre sillas</li>
+          <li>El mapa de tus sistemas: qué se conecta con qué y dónde se rompió</li>
+        </ul>
+        <div class="foot"><span class="ptag team">Muy pronto</span></div>
+      </div>
+    </div>
+    <p class="plans-later">Pro y Team llegan muy pronto, con 14 días gratis para probarlos. Mientras tanto, Kymo se descarga gratis.</p>
+  </div>
+</section>
+
 
 <section class="more" id="seguridad">
   <div class="wrap">
@@ -560,7 +710,7 @@
           <p style="color:var(--ink-2);margin:0;font-size:17px">Kymo se conecta a muchas herramientas, así que te muestra exactamente qué puede ver cada una, qué usa de verdad y qué le llega a la IA.</p>
         </div>
         <div class="sec-points">
-          <div class="point"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><h4>Cifrado en tu computador</h4><p>Todo se guarda cifrado con AES-256 y solo se abre con tu cuenta. No hay un servidor de Kymo con tu trabajo.</p></div></div>
+          <div class="point"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><h4>Cifrado en tu computador</h4><p>Todo se guarda cifrado con AES-256 y solo se abre con tu cuenta. En Free, tu trabajo nunca sale de tu computador.</p></div></div>
           <div class="point"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><div><h4>Ves qué puede ver cada conexión</h4><p>En palabras: lo que su permiso puede leer, lo que Kymo de verdad lee, lo que guarda y cuándo la usó.</p></div></div>
           <div class="point"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div><div><h4>Una bitácora de cada acceso</h4><p>Cada lectura, cada escritura y cada vez que un dato fue a la IA, día por día. Nunca el contenido.</p></div></div>
           <div class="point"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div><div><h4>Desconectar revoca de verdad</h4><p>Al desconectar, Kymo revoca el acceso en la herramienta; si no se puede, te dice dónde quitarlo.</p></div></div>
@@ -578,7 +728,7 @@
       <div class="section-head" style="margin-bottom:0">
         <span class="caption light">Se conecta con</span>
         <h2>Con las herramientas que ya usas.</h2>
-        <p>No tienes que mudarte: Kymo lee las tuyas y te trae lo importante. Y si no tienes ninguna, trae su propia lista de tareas. Con cada una, ves qué puede leer y qué usa de verdad.</p>
+        <p>No tienes que mudarte: Kymo lee las tuyas y te trae lo importante. Y si no tienes ninguna, trae su propia lista de tareas. Con cada una, ves qué puede leer y qué usa de verdad. En Free, las conexiones directas; en Pro y Team, todas.</p>
       </div>
       <div class="integ-count panel halftone"><span class="big">36</span><span>integraciones, y contando</span></div>
     </div>
@@ -606,15 +756,15 @@
       <svg width="58" height="58"><use href="#mark"/></svg>
       <h2>Toma el control de tu trabajo.</h2>
       <p>Descárgala, conéctala en minutos y empieza la semana sabiendo exactamente qué hacer y por qué.</p>
-      <div class="cta-row" style="justify-content:center"><div class="dl-pair" data-pair="final"><a class="btn primary dl-win" href="https://github.com/guildmaster-app/releases/releases/latest/download/Kymo-Windows.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg><span>Descargar para Windows</span></a><a class="btn primary dl-mac" href="https://github.com/guildmaster-app/releases/releases/latest/download/Kymo-Mac-arm64.dmg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.1 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.6 2.8-1.3z"/></svg><span>Descargar para Mac</span></a></div></div>
+      <div class="cta-row" style="justify-content:center"><div class="dl-pair" data-pair="final"><a class="btn primary dl-win" href="https://github.com/kymo-app/releases/releases/latest/download/Kymo-Windows.exe"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l7.5-1v7H3zM11.5 4.4L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg><span>Descargar para Windows</span></a><a class="btn primary dl-mac" href="https://github.com/kymo-app/releases/releases/latest/download/Kymo-Mac-arm64.dmg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.1 5.6c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.6 2.8-1.3z"/></svg><span>Descargar para Mac</span></a></div></div>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <span>Kymo · El centro de mando para equipos de trabajo.</span>
-    <a href="https://github.com/guildmaster-app/releases/releases">Todas las versiones</a>
+    <span>Kymo · El centro de mando de tu trabajo, y el de tu equipo.</span>
+    <a href="https://github.com/kymo-app/releases/releases">Todas las versiones</a>
   </div>
 </footer>
 
@@ -622,7 +772,7 @@
   // Two equal buttons, Windows and Mac; the visitor's system goes first. A Mac with Intel graphics gets the Intel
   // installer from the Mac button too. Without a published version yet, they say so instead of landing on a 404.
   (function () {
-    // The organization is the page's own (guildmaster-app.github.io now, kymo-app.github.io after its rename).
+    // The organization is the page's own (kymo-app.github.io); kymo-app anywhere else, like a local preview.
     var owner = /\.github\.io$/.test(location.hostname) ? location.hostname.split('.')[0] : 'kymo-app';
     var repo = 'https://github.com/' + owner + '/releases/releases';
     var base = repo + '/latest/download/';
